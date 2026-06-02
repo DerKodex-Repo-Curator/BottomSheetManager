@@ -1,11 +1,12 @@
+import UIKit
 
 // MARK: - Bottom Sheet Manager
 public final class BottomSheetManager {
     private var currentSheet: BottomSheetViewController?
-    static let shared = BottomSheetManager()
+    public static let shared = BottomSheetManager()
     private init() {}
-    
-    func present(
+
+    public func present(
         contentViewController: UIViewController,
         from parentVC: UIViewController,
         defaultHeight: CGFloat = 300,
@@ -19,6 +20,8 @@ public final class BottomSheetManager {
         startFullExpanded: Bool = false,
         snapPoints: [CGFloat] = []
     ) {
+        currentSheet?.animateDismissView()
+
         let bottomSheet = BottomSheetViewController(
             contentViewController: contentViewController,
             defaultHeight: defaultHeight,
@@ -32,15 +35,15 @@ public final class BottomSheetManager {
         bottomSheet.delegate = delegate
         self.currentSheet = bottomSheet
         bottomSheet.startExpanded = startFullExpanded
-        bottomSheet.snapPoints = snapPoints.sorted() // 🔁 Ensure sorted (lowest to highest)
+        bottomSheet.snapPoints = snapPoints.sorted()
         parentVC.present(bottomSheet, animated: false)
     }
-    
-    func dismiss() {
+
+    public func dismiss() {
         currentSheet?.animateDismissView()
         currentSheet = nil
     }
-    
+
 }
 
 
